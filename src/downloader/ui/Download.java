@@ -9,17 +9,19 @@ import downloader.fc.Downloader;
 
 public class Download extends JProgressBar {
 
+	Downloader d;
 
 	public Download(Downloader d) {
 		super(0, 100);
+		this.d = d;
 		setValue(0);
-		setStringPainted(true); 
-	    setLayout(null); 
+		setStringPainted(true);
+		setLayout(null);
 		setVisible(true);
 		d.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				setValue(d.getProgress());
-				setString(d.toString()+" "+d.getProgress()+" %");
+				setString(d.toString() + " " + d.getProgress() + " %");
 			}
 		});
 	}

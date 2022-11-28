@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import downloader.fc.Downloader;
+
 public class Main extends JFrame {
 
 	Main(String title, String[] args) {
@@ -17,9 +19,9 @@ public class Main extends JFrame {
 		this.add(pan);
 
 		for (String url : args) {
-			DLThread DL = new DLThread(url);
-			DL.start();
-			Download bar = new Download(DL.getDL());
+			Downloader dler = new Downloader(url);
+			dler.execute();
+			Download bar = new Download(dler);
 			pan.add(bar);
 		}
 	}
