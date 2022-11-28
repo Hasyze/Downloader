@@ -12,6 +12,8 @@ public class Main extends JFrame {
 		for (String url : args) {
 			DLThread DL = new DLThread(url);
 			DL.start();
+			Download bar = new Download (DL.getDL());
+			this.add(bar);
 		}
 	}
 

@@ -12,11 +12,6 @@ public class DLThread extends Thread {
 	public DLThread(String URL) {
 		try {
 			this.dl = new Downloader(URL);
-			this.dl.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
-					System.out.println(">" + dl + " - " + evt.getNewValue() + "%");
-				}
-			});
 		} catch (RuntimeException e) {
 			System.err.format("skipping %s %s\n", URL, e);
 		}
