@@ -1,8 +1,5 @@
 package downloader.ui;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import downloader.fc.Downloader;
 
 public class DLThread extends Thread {
@@ -20,7 +17,7 @@ public class DLThread extends Thread {
 
 	public void run() {
 		try {
-			System.out.println(">Downloading " + dl);
+			System.out.println("> Downloading " + dl);
 			dl.download();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
