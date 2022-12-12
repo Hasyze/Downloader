@@ -16,7 +16,6 @@ public class Download extends JProgressBar {
 		this.d = d;
 		setValue(0);
 		setStringPainted(true);
-		setLayout(null);
 		setVisible(true);
 		d.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {

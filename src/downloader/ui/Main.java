@@ -4,12 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -21,15 +18,14 @@ public class Main extends JFrame {
 		super(title);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(420, 500);
-		
+
 		JPanel pan = new JPanel();
 		this.add(pan);
 		pan.setLayout(new BorderLayout());
-		
-		
+
 		JPanel panDL = new JPanel();
 		panDL.setLayout(new StackLayout());
-		
+
 		JPanel panAdd = new JPanel(new BorderLayout());
 		JTextField addUrl = new JTextField("");
 		JButton addButton = new JButton("add");
@@ -39,14 +35,29 @@ public class Main extends JFrame {
 				String newURL = addUrl.getText();
 				Downloader dler = new Downloader(newURL);
 				dler.execute();
+
+				JPanel DL = new JPanel();
 				Download bar = new Download(dler);
-				panDL.add(bar);
+				DL.add(bar);
+				JButton deleteDL = new JButton("CANCEL");
+				DL.add(deleteDL);
+				panDL.add(DL);
+
+				deleteDL.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dler.cancel(true);
+						panDL.remove(DL);
+						panDL.revalidate();
+						panDL.repaint();
+					}
+				});
+				panDL.revalidate();
 			}
 		});
-		
+
 		panAdd.add(BorderLayout.CENTER, addUrl);
 		panAdd.add(BorderLayout.EAST, addButton);
-		
+
 		pan.add(BorderLayout.CENTER, panDL);
 		pan.add(BorderLayout.SOUTH, panAdd);
 
