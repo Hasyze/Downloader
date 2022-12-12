@@ -20,7 +20,7 @@ public class Download extends JProgressBar {
 		d.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				setValue(d.getProgress());
-				setString(d.toString() + " " + d.getProgress() + " %");
+				setString(d.getProgress() + " %");
 			}
 		});
 	}
