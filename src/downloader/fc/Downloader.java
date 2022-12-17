@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.SwingWorker;
 
@@ -25,6 +26,7 @@ public class Downloader extends SwingWorker<Object, Object> {
 	String filename;
 	File temp;
 	FileOutputStream out;
+	ReentrantLock verrou;
 
 	private int _progress;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -42,6 +44,7 @@ public class Downloader extends SwingWorker<Object, Object> {
 			filename = path[path.length - 1];
 			temp = File.createTempFile(filename, ".part");
 			out = new FileOutputStream(temp);
+			verrou = new ReentrantLock();
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
@@ -59,6 +62,7 @@ public class Downloader extends SwingWorker<Object, Object> {
 		int count = 0;
 
 		while (true) {
+			verrou.lock();
 			try {
 				count = in.read(buffer, 0, CHUNK_SIZE);
 			} catch (IOException e) {
@@ -77,6 +81,7 @@ public class Downloader extends SwingWorker<Object, Object> {
 
 			size += count;
 			setProgress(100 * size / content_length);
+			verrou.unlock();
 			Thread.sleep(1000);
 		}
 
@@ -97,6 +102,26 @@ public class Downloader extends SwingWorker<Object, Object> {
 	@Override
 	protected Object doInBackground() throws Exception {
 
-		return download();
+		while (!isCancelled()) {
+			if(!isPaused()) {
+				return download();
+			}else {
+				Thread.sleep(200);
+			}
+		}
+		return null;
 	}
+	
+	public void pause() {
+		verrou.unlock();
+	}
+	
+	public void resume() {
+		verrou.lock();
+	}
+	
+	public boolean isPaused() {
+		return verrou.isHeldByCurrentThread();
+	}
+
 }

@@ -39,6 +39,10 @@ public class Main extends JFrame {
 				JPanel DL = new JPanel();
 				Download bar = new Download(dler);
 				DL.add(bar);
+				
+				DL.add(new PlayPauseButton(dler, panDL));
+				panDL.add(DL);
+				
 				JButton deleteDL = new JButton("CANCEL");
 				DL.add(deleteDL);
 				panDL.add(DL);
