@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -17,7 +18,7 @@ public class Main extends JFrame {
 	Main(String title, String[] args) {
 		super(title);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(420, 500);
+		this.setSize(600, 500);
 
 		JPanel pan = new JPanel();
 		this.add(pan);
@@ -37,6 +38,7 @@ public class Main extends JFrame {
 				dler.execute();
 
 				JPanel DL = new JPanel();
+				DL.add(new JLabel(newURL));
 				Download bar = new Download(dler);
 				DL.add(bar);
 				
@@ -68,8 +70,24 @@ public class Main extends JFrame {
 		for (String url : args) {
 			Downloader dler = new Downloader(url);
 			dler.execute();
+			JPanel DL = new JPanel();
+
+			DL.add(new JLabel(url));
 			Download bar = new Download(dler);
-			panDL.add(bar);
+			DL.add(bar);
+			JButton deleteDL = new JButton("CANCEL");
+			DL.add(deleteDL);
+			panDL.add(DL);
+
+			deleteDL.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dler.cancel(true);
+					panDL.remove(DL);
+					panDL.revalidate();
+					panDL.repaint();
+				}
+			});
+			panDL.revalidate();
 		}
 	}
 
